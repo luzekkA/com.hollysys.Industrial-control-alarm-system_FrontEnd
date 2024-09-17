@@ -1,10 +1,10 @@
 <template>
   <el-menu default-active="0" class="el-menu-vertical-demo" :collapse="isCollapse" background-color="#2a2e34"
     text-color="#a19e9e" active-text-color="#fff" >
-    <el-menu-item class="namebar">
+    <!-- <el-menu-item class="namebar">
         <div class="namebarItem">{{ name }}<span style="margin-left: 20px;"></span>{{ id }}</div>
         <el-icon><ArrowRight /></el-icon>
-    </el-menu-item>
+    </el-menu-item> -->
     <el-menu-item class="textbar">
         <div class="textbarItem">菜单</div>
     </el-menu-item>

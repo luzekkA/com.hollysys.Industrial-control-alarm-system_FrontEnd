@@ -2,8 +2,39 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 //定义静态路由
 export const staticRoutes: Array<RouteRecordRaw> = [
+    
     {
         path: "/index",
+        component: () => import('../views/Layout/index.vue'),
+        meta: {
+            icon: 'HomeFilled',
+            name: "主页"
+        },
+        children: [
+            {
+                path: '',
+                name: "主页",
+                component: () => import('../views/index.vue'),
+            }, 
+        ],
+    },
+    {
+        path: "/addurl",
+        component: () => import('../views/Layout/index.vue'),
+        meta: {
+            icon: 'HomeFilled',
+            name: "添加服务器地址"
+        },
+        children: [
+            {
+                path: '',
+                name: "添加服务器地址",
+                component: () => import('../views/addURL.vue'),
+            }, 
+        ],
+    },
+    {
+        path: "/realtime",
         component: () => import('../views/Layout/index.vue'),
         meta: {
             icon: 'HomeFilled',
@@ -11,15 +42,15 @@ export const staticRoutes: Array<RouteRecordRaw> = [
         },
         children: [
             {
-                path: '',
+                path: 'latest',
                 name: "最近30条实时报警",
-                component: () => import('../views/realtime/index.vue'),
+                component: () => import('../views/realtime/latest.vue'),
             }, 
             {
                 // path: '/404',
                 path: 'all',
                 name: "所有实时报警",
-                component: () => import('../views/realtime/history.vue'),
+                component: () => import('../views/realtime/all.vue'),
             },
         ],
     },

@@ -9,6 +9,7 @@ import './router/permission'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // import VueChartkick from 'vue-chartkick'
 import 'chartkick/chart.js'
+import { useUrlStore } from './store/useUrlStore'
 const app = createApp(App)
 .use(router)
 .use(ElementPlus)
@@ -19,3 +20,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 app.mount('#app')
+
+const urlStore = useUrlStore()
+urlStore.loadUrls()
