@@ -1,38 +1,57 @@
 <template>
-    <el-page-header @back="goBack">
-        <template #content>
-            <span class="text-large font-600 mr-3"> 实时报警 </span>
-        </template>
-    </el-page-header>
-    <!-- <div> this is massage :{{ refreshMassage }}</div> -->
-
-    <el-table :data="alarmsList" style="width: 100%">
-        <!-- <el-table-column prop="id" label="Id" /> -->
+    <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false" style="margin-bottom: 10px;">
+        <el-menu-item index="0">
+            <h1 style="margin: 0px;">实时报警</h1>
+        </el-menu-item>
+        <RouterLink to="/">
+            <el-menu-item index="1">
+                <h3 style="margin: 0px;">主页</h3>
+            </el-menu-item>
+        </RouterLink>
+        <RouterLink to="/realtime/all">
+            <el-menu-item index="1">
+                <h3 style="margin: 0px;">查看所有实时报警</h3>
+            </el-menu-item>
+        </RouterLink>
+    </el-menu>
+    <el-table :data="alarmsList" style="width: 100%;" stripe>
         <el-table-column prop="alarmTime" label="警告时间" />
         <el-table-column prop="source" label="警告源" />
         <el-table-column prop="level" label="警告等级" />
         <el-table-column prop="type" label="类型" />
         <el-table-column prop="additionalInfo" label="附加信息" />
-        <el-table-column prop="isConfirmed" label="是否确认" />
-        <el-table-column fixed="right" label="操作">
-            <template #default="scope">
-                <el-button link type="primary" size="small" @click="confirmAlarm(getOrigin(scope.row.serviceUrl), scope.row.id)"
-                    :disabled="scope.row.isConfirmed">
-                    更改确认状态
-                </el-button>
-            </template>
-        </el-table-column>
         <el-table-column prop="confirmTime" label="确认时间" />
-        <el-table-column prop="isRecovered" label="是否恢复" />
+        <el-table-column prop="recoverTime" label="恢复时间" /> 
+        <el-table-column label="警告状态" style="color: red;">
+            <template #default="scope">
+                <div style="color: red;" v-if="!scope.row.isConfirmed&&!scope.row.isRecovered">
+                    未确认
+                </div>
+                <div style="color: red;" v-if="!scope.row.isConfirmed&&scope.row.isRecovered">
+                    未确认已恢复
+                </div>
+                <div style="color: red;" v-if="scope.row.isConfirmed&&!scope.row.isRecovered">
+                    已确认未恢复
+                </div>
+                <div style="color: red;" v-if="scope.row.isConfirmed&&scope.row.isRecovered">
+                    已确认已恢复
+                </div>
+            
+            </template>
+        </el-table-column>
+         
         <el-table-column fixed="right" label="操作">
             <template #default="scope">
-                <el-button link type="primary" size="small" @click="recoverAlarm(getOrigin(scope.row.serviceUrl), scope.row.id)"
-                    :disabled="scope.row.isRecovered">
-                    更改恢复状态
+                <el-button v-if="!scope.row.isConfirmed" link type="primary" size="small"
+                    @click="confirmAlarm(getOrigin(scope.row.serviceUrl), scope.row.id)">
+                    确认状态
+                </el-button>
+                <el-button v-if="scope.row.isConfirmed&&!scope.row.isRecovered" link type="primary" size="small"
+                    @click="recoverAlarm(getOrigin(scope.row.serviceUrl), scope.row.id)">
+                    确认修复
                 </el-button>
             </template>
         </el-table-column>
-        <el-table-column prop="recoverTime" label="恢复时间" />
     </el-table>
 </template>
 
@@ -48,19 +67,19 @@ let alarmsList = ref()
 // let intervalId: any
 const refreshMassage = ref("")
 const getOrigin = (serviceUrl: any) => {
-    devLog("this is serviceUrl",serviceUrl)
+    devLog("this is serviceUrl", serviceUrl)
     let url = new URL(serviceUrl);
-    let serverAddress = url.origin+'/api';
-    devLog("this is serviceADDRES",serverAddress)
+    let serverAddress = url.origin + '/api';
+    devLog("this is serviceADDRES", serverAddress)
     return serverAddress
 }
 const connectionBuilder = new signalR.HubConnectionBuilder()
-    // .withUrl("http://127.0.0.1:5235/alarmHub")
-    // .build();
+// .withUrl("http://127.0.0.1:5235/alarmHub")
+// .build();
 urlStore.UrlList.forEach(element => {
     let url = new URL(element.path)
     url.origin
-connectionBuilder.withUrl(url.origin+'/alarmHub')
+    connectionBuilder.withUrl(url.origin + '/alarmHub')
 });
 const connection = connectionBuilder.build();
 connection.on("Massage", (message: string) => {
@@ -111,12 +130,7 @@ onUnmounted(() => {
 //     intervalId = setInterval(fetchAlarms, 5 * 1000); // 每5分钟调用一次
 // });
 
-// onUnmounted(() => {
-//     clearInterval(intervalId); // 组件卸载时清除定时器
-// });
-const goBack = () => {
-    console.log('go back')
-}
+
 
 
 

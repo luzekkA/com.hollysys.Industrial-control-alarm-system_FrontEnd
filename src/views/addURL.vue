@@ -1,4 +1,14 @@
 <template>
+    <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false" style="margin-bottom: 10px;">
+        <el-menu-item index="0">
+            <h1 style="margin: 0px;">添加URL</h1>
+        </el-menu-item>
+        <RouterLink to="/">
+            <el-menu-item index="1">
+                <h3 style="margin: 0px;">主页</h3>
+            </el-menu-item>
+        </RouterLink>
+    </el-menu>
     <div>
         <el-row :gutter="20">
             <el-col :span="20">

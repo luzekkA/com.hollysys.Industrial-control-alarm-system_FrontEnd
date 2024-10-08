@@ -1,13 +1,18 @@
 <template>
-    <el-page-header @back="goBack">
-        <template #content>
-            <span class="text-large font-600 mr-3"> 搜索报警 </span>
-        </template>
-        <el-select v-model="serverUrl" placeholder="请选择要请求的服务器地址" @change="handleSelectChange" style="margin-bottom: 20px;">
+  <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false" style="margin-bottom: 10px;">
+        <el-menu-item index="0">
+            <h1 style="margin: 0px;">搜索报警</h1>
+        </el-menu-item>
+        <RouterLink to="/">
+            <el-menu-item index="1">
+                <h3 style="margin: 0px;">主页</h3>
+            </el-menu-item>
+        </RouterLink>
+    </el-menu>
+    <el-select v-model="serverUrl" placeholder="请选择要请求的服务器地址" @change="handleSelectChange" style="margin-bottom: 20px;">
             <el-option v-for="item in urlStore.UrlList" :key="item.path" :label="item.path" :value="item.path">
             </el-option>
         </el-select>
-    </el-page-header>
     <div class="input-rows">
         <div class="input-row">
             <el-date-picker v-model="Start_AlarmTime" type="date" placeholder="选择开始警告时间"
@@ -19,17 +24,13 @@
             <el-input v-model="Source" placeholder="警告源" style="width: 200px;"></el-input>
             <el-input v-model="Type" placeholder="类型" style="width: 200px;"></el-input>
             <el-input v-model="Level" placeholder="等级" style="width: 200px;"></el-input>
+            <el-select v-model="Condition" placeholder="状态" style="width: 200px;">
+                <el-option label="未确认" value="未确认"></el-option>
+                <el-option label="已确认未恢复" value="已确认未恢复"></el-option>
+                <el-option label="未确认已恢复" value="未确认已恢复"></el-option>
+                <el-option label="已确认已恢复" value="已确认已恢复"></el-option>
+            </el-select>
             <el-button type="primary" @click="search" style="width: 200px;">搜索</el-button>
-        </div>
-        <div class="input-row">
-            <el-select v-model="IsConfirmed" placeholder="是否确认" style="width: 200px;">
-                <el-option label="true" :value="true"></el-option>
-                <el-option label="false" :value="false"></el-option>
-            </el-select>
-            <el-select v-model="IsRecovered" placeholder="是否修复" style="width: 200px;">
-                <el-option label="true" :value="true"></el-option>
-                <el-option label="false" :value="false"></el-option>
-            </el-select>
         </div>
     </div>
     <el-table :data="alarmsList" style="width: 100%">
@@ -81,12 +82,33 @@ const End_AlarmTime = ref('');
 const Source = ref('');
 const Type = ref('');
 const Level = ref('');
-const IsConfirmed = ref(false);
-const IsRecovered = ref(false);
+const Condition = ref("");
+// const IsRecovered = ref(false);
 let page = ref(1)
 // let intervalId: any
+
+
 onMounted(() => {
-    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed.value, IsRecovered.value, Level.value, page.value).then(data => {
+    var IsConfirmed;
+    var IsRecovered;
+    if(Condition.value == "未确认"){
+        IsConfirmed = false;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="已确认未恢复"){
+        IsConfirmed = true;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="未确认已恢复"){
+        IsConfirmed = false;
+        IsRecovered = true
+    }
+    else if(Condition.value=="已确认已恢复"){
+        IsConfirmed = true;
+        IsRecovered = true;
+    }
+    
+    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed, IsRecovered, Level.value, page.value).then(data => {
         devLog("this is data", data)
         alarmsList.value = data.data.items
         // total.value = data.data.data.TotalPages
@@ -97,7 +119,25 @@ onMounted(() => {
 })
 
 const search = () => {
-    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed.value, IsRecovered.value, Level.value, page.value).then(data => {
+    var IsConfirmed;
+    var IsRecovered;
+    if(Condition.value == "未确认"){
+        IsConfirmed = false;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="已确认未恢复"){
+        IsConfirmed = true;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="未确认已恢复"){
+        IsConfirmed = false;
+        IsRecovered = true
+    }
+    else if(Condition.value=="已确认已恢复"){
+        IsConfirmed = true;
+        IsRecovered = true;
+    }
+    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed, IsRecovered, Level.value, page.value).then(data => {
         devLog("this is data", data)
         alarmsList.value = data.data.items
         // total.value = data.data.data.TotalPages
@@ -108,8 +148,26 @@ const search = () => {
 }
 
 const prevPage = () => {
+    var IsConfirmed;
+    var IsRecovered;
+    if(Condition.value == "未确认"){
+        IsConfirmed = false;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="已确认未恢复"){
+        IsConfirmed = true;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="未确认已恢复"){
+        IsConfirmed = false;
+        IsRecovered = true
+    }
+    else if(Condition.value=="已确认已恢复"){
+        IsConfirmed = true;
+        IsRecovered = true;
+    }
     page.value -= 1
-    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed.value, IsRecovered.value, Level.value, page.value).then(data => {
+    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed, IsRecovered, Level.value, page.value).then(data => {
         if (data.data.items.length < 1) {
             ElMessage.success("已经是第一页")
         }
@@ -129,8 +187,26 @@ const prevPage = () => {
 };
 
 const nextPage = () => {
+    var IsConfirmed;
+    var IsRecovered;
+    if(Condition.value == "未确认"){
+        IsConfirmed = false;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="已确认未恢复"){
+        IsConfirmed = true;
+        IsRecovered = false;
+    }
+    else if(Condition.value=="未确认已恢复"){
+        IsConfirmed = false;
+        IsRecovered = true
+    }
+    else if(Condition.value=="已确认已恢复"){
+        IsConfirmed = true;
+        IsRecovered = true;
+    }
     page.value += 1
-    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed.value, IsRecovered.value, Level.value, page.value).then(data => {
+    getAlarms(serverUrl.value,Start_AlarmTime.value, End_AlarmTime.value, Source.value, Type.value, IsConfirmed, IsRecovered, Level.value, page.value).then(data => {
         if (data.data.items.length < 1) {
             devLog("no more")
             ElMessage.success("已经是最后一页")
@@ -148,9 +224,7 @@ const nextPage = () => {
 
 
 };
-const goBack = () => {
-    console.log('go back')
-}
+
 
 const handleSelectChange = () => {
     devLog("serverchange")
