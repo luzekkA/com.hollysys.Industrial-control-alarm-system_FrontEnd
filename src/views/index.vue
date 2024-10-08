@@ -75,7 +75,6 @@ import { onMounted, ref, watch } from 'vue';
 import { useUrlStore } from '../store/useUrlStore'
 import { devLog } from '../utils/devLog';
 import { getIndexInfo } from '../api/user'
-import Chart from 'chart.js/auto';
 import * as signalR from "@microsoft/signalr";
 import { ElMessage } from 'element-plus';
 import * as echarts from 'echarts';
@@ -109,45 +108,6 @@ connection.on("Massage", (message: string) => {
   getIndexInfo().then(data => {
     devLog("this is data", data)
     IndexInfo.value = data
-
-
-    let labels = Object.keys(IndexInfo.value.countGroupByType);
-    let datas = Object.values(IndexInfo.value.countGroupByType);
-
-    const barCtx = document.getElementById('myBarChart') as HTMLCanvasElement;
-    new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: datas,
-          label: '报警类型分布图',
-          backgroundColor: ['rgb(25, 25, 112)', 'rgb(0, 0, 128)', 'rgb(0, 0, 139)', 'rgb(0, 0, 156)', 'rgb(0, 0, 205)', 'rgb(0, 0, 255)'],
-        }]
-      },
-      options: {
-        responsive: false,
-      },
-    });
-
-    labels = Object.keys(IndexInfo.value.countGroupByLevel);
-    datas = Object.values(IndexInfo.value.countGroupByLevel);
-
-    const barCtx2 = document.getElementById('myBarChart2') as HTMLCanvasElement;
-    new Chart(barCtx2, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: datas,
-          label: '报警级别分布图',
-          backgroundColor: ['rgb(25, 25, 112)', 'rgb(0, 0, 128)', 'rgb(0, 0, 139)', 'rgb(0, 0, 156)', 'rgb(0, 0, 205)', 'rgb(0, 0, 255)'],
-        }]
-      },
-      options: {
-        responsive: false,
-      },
-    });
   }).catch(error => {
     console.error('获取警告列表失败', error);
   });
@@ -304,18 +264,10 @@ onMounted(() => {
   vantaEffect = BIRDS({
     el: "#mainWindow",
     THREE: THREE,
-    mouseControls: true,
-    touchControls: true,
-    gyroControls: false,
-    minHeight: 200.00,
-    minWidth: 200.00,
-    scale: 1.00,
-    scaleMobile: 1.00,
-    color: 0x212844,
-    backgroundColor: 0x1f233a,
-    maxDistance: 28.00,
-    spacing: 14.00
-  });
+    color: 0x999999,
+    backgroundColor: 0x000000,
+    maxDistance:5
+  })
 
 
 });
