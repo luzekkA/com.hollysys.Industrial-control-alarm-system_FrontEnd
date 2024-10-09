@@ -9,7 +9,7 @@
             </el-menu-item>
         </RouterLink>
         <RouterLink to="/realtime/latest">
-            <el-menu-item index="1">
+            <el-menu-item index="2">
                 <h3 style="margin: 0px;">查看最近30条实时报警</h3>
             </el-menu-item>
         </RouterLink>

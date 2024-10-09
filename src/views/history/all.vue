@@ -8,9 +8,9 @@
                 <h3 style="margin: 0px;">主页</h3>
             </el-menu-item>
         </RouterLink>
-        <RouterLink to="/realtime/latest">
-            <el-menu-item index="1">
-                <h3 style="margin: 0px;">查看所有历史报警</h3>
+        <RouterLink to="/history/latest">
+            <el-menu-item index="2">
+                <h3 style="margin: 0px;">查看最新历史报警</h3>
             </el-menu-item>
         </RouterLink>
     </el-menu>

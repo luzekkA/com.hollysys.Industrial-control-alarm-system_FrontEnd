@@ -9,8 +9,8 @@
             </el-menu-item>
         </RouterLink>
         <RouterLink to="/history/all">
-            <el-menu-item index="1">
-                <h3 style="margin: 0px;">查看所有实时报警</h3>
+            <el-menu-item index="2">
+                <h3 style="margin: 0px;">查看所有历史报警</h3>
             </el-menu-item>
         </RouterLink>
     </el-menu>

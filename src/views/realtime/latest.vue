@@ -9,7 +9,7 @@
             </el-menu-item>
         </RouterLink>
         <RouterLink to="/realtime/all">
-            <el-menu-item index="1">
+            <el-menu-item index="2">
                 <h3 style="margin: 0px;">查看所有实时报警</h3>
             </el-menu-item>
         </RouterLink>
