@@ -6,15 +6,15 @@
         <h1 style="margin: 0px;">首页</h1>
       </el-menu-item>
       <RouterLink to="/search">
-            <el-menu-item index="1">
-                <h3 style="margin: 0px;">搜索报警</h3>
-            </el-menu-item>
-        </RouterLink>
-        <RouterLink to="/addUrl">
-            <el-menu-item index="1">
-                <h3 style="margin: 0px;">添加服务器URL</h3>
-            </el-menu-item>
-        </RouterLink>
+        <el-menu-item index="1">
+          <h3 style="margin: 0px;">搜索报警</h3>
+        </el-menu-item>
+      </RouterLink>
+      <RouterLink to="/addUrl">
+        <el-menu-item index="1">
+          <h3 style="margin: 0px;">添加服务器URL</h3>
+        </el-menu-item>
+      </RouterLink>
     </el-menu>
     <!--  -->
     <el-row>
@@ -23,30 +23,30 @@
           <el-col :span="12">
             <RouterLink to="/realtime/latest">
               <el-card style="width: 200px;height: 150px; background-color:#212844; border:0px;">
-                <span  class="blinking-text">实时报警数</span>
+                <span class="blinking-text">实时报警数</span>
                 <h1 class="blinking-text" style="margin-top:20px;"> {{ IndexInfo?.realTimeAlarmTimes }}</h1>
               </el-card>
             </RouterLink>
           </el-col>
           <el-col :span="12">
             <RouterLink to="/history/latest">
-            <el-card style="width: 200px;height: 150px; background-color:#212844; border:0px;">
-              <span style="color: white;">历史报警数</span>
-              <h1 style="margin-top:20px;color: white;">{{ IndexInfo?.historyAlarmTimes }}</h1>
-            </el-card>
-          </RouterLink>
+              <el-card style="width: 200px;height: 150px; background-color:#212844; border:0px;">
+                <span style="color: white;">历史报警数</span>
+                <h1 style="margin-top:20px;color: white;">{{ IndexInfo?.historyAlarmTimes }}</h1>
+              </el-card>
+            </RouterLink>
           </el-col>
         </el-row>
         <el-row style="margin-bottom: 20px; margin-left: 10px;">
           <el-col :span="12">
             <el-card style="width: 200px;height: 150px; background-color:#212844; border:0px;">
               <span style="color: white;">待确认数</span>
-              <h1   style="margin-top:20px; color: white;">{{ IndexInfo?.notConfirmedAlarmTimes }}</h1>
+              <h1 style="margin-top:20px; color: white;">{{ IndexInfo?.notConfirmedAlarmTimes }}</h1>
             </el-card>
           </el-col>
           <el-col :span="12">
             <el-card style="width: 200px;height: 150px; background-color:#212844; border:0px;">
-              <span style="color: white;" >待恢复数</span>
+              <span style="color: white;">待恢复数</span>
               <h1 style="margin-top:20px;color: white;">{{ IndexInfo?.notRecoveredAlarmTimes }}</h1>
             </el-card>
           </el-col>
@@ -208,9 +208,10 @@ onMounted(() => {
 
   //饼图
   pieChartDom = document.getElementById('pieChart')!;
-  pieChart = echarts.init(pieChartDom, 'darke');
+  pieChart = echarts.init(pieChartDom);
   pieChartOption = ref<EChartsOption>();
   pieChartOption.value = {
+
     legend: {
       top: 'bottom'
     },
@@ -241,14 +242,19 @@ onMounted(() => {
           }
         },
         color: [
-          '#c12e34',
-          '#e6b600',
-          '#0098d9',
-          '#2b821d',
-          '#005eaa',
-          '#339ca8',
-          '#cda819',
-          '#32a487'
+          '#8b0000',
+          '#ff0000',
+          '#ff4500',
+          '#ffa500',
+          '#ff8c00',
+          '#ffc800',
+          '#ffdc66',
+          '#ffb6c1',
+          '#ff6347',
+          '#ff7f50',
+          '#ffb6c1',
+          '#f08080',
+
         ],
         itemStyle: {
           borderRadius: 8
@@ -266,21 +272,26 @@ onMounted(() => {
     THREE: THREE,
     color: 0x999999,
     backgroundColor: 0x000000,
-    maxDistance:5
+    maxDistance: 5
   })
 
 
 });
 
 const color = [
-  '#c12e34',
-  '#e6b600',
-  '#0098d9',
-  '#2b821d',
-  '#005eaa',
-  '#339ca8',
-  '#cda819',
-  '#32a487'
+  '#8b0000',
+  '#ff0000',
+  '#ff4500',
+  '#ffa500',
+  '#ff8c00',
+  '#ffc800',
+  '#ffdc66',
+  '#ffb6c1',
+  '#ff6347',
+  '#ff7f50',
+  '#ffb6c1',
+  '#f08080',
+
 ];
 watch(IndexInfo, (newValue) => {
   if (pieChart) {
